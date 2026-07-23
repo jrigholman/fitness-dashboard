@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Jon's Bulk Plan</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<meta name="theme-color" content="#2a78d6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bulk Plan">
 <style>
   :root {
     color-scheme: light;
@@ -177,6 +184,22 @@
   .g-item input { margin-top: 3px; accent-color: var(--series-1); width: 16px; height: 16px; flex-shrink: 0; }
   .g-item.checked label { text-decoration: line-through; color: var(--text-muted); }
   .g-item label { cursor: pointer; }
+  .g-badge {
+    display: inline-block; font-size: 10.5px; color: var(--text-muted);
+    border: 1px solid var(--border); padding: 0 7px; border-radius: 999px;
+    margin-left: 6px; white-space: nowrap; vertical-align: 1px;
+  }
+
+  /* Store cards */
+  .store {
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 10px; background: var(--page);
+  }
+  .store .s-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+  .store .s-name { font-weight: 700; font-size: 14.5px; }
+  .store .s-role { font-size: 12px; color: var(--good-text); font-weight: 600; }
+  .store .s-addr { font-size: 12.5px; color: var(--text-muted); }
+  .store .s-why { font-size: 13.5px; color: var(--text-secondary); margin: 6px 0 0; }
 
   /* Rules / lists */
   ul.rules { margin: 0; padding-left: 20px; font-size: 14px; color: var(--text-secondary); }
@@ -209,6 +232,7 @@
     <a href="#training">Training</a>
     <a href="#meals">Meals</a>
     <a href="#grocery">Grocery</a>
+    <a href="#stores">Stores</a>
     <a href="#recovery">Recovery</a>
   </nav>
 
@@ -401,6 +425,47 @@
     </div>
   </section>
 
+  <!-- ============ STORES ============ -->
+  <section id="stores">
+    <h2>Where to buy — Springville, UT</h2>
+    <p class="section-sub">The two-store strategy: one quick weekly trip in town, one cheap bulk run when staples run low. Prices per 2026 Consumer Reports and store comparisons.</p>
+    <div class="card">
+      <div class="store">
+        <div class="s-head">
+          <span class="s-name">Walmart Supercenter</span>
+          <span class="s-role">YOUR WEEKLY STORE</span>
+          <span class="s-addr">660 S 1750 W, Springville · ~5 min</span>
+        </div>
+        <p class="s-why">Everything on the list in one stop, including rotisserie chickens, whey, and creatine. Within ~3% of the cheapest store around, and it's in town — convenience is what keeps a bulk consistent. Order pickup in the app if you want to skip the aisles.</p>
+      </div>
+      <div class="store">
+        <div class="s-head">
+          <span class="s-name">WinCo Foods</span>
+          <span class="s-role">MONTHLY BULK RUN</span>
+          <span class="s-addr">895 N 980 W, Orem · ~15 min · open 24 hrs</span>
+        </div>
+        <p class="s-why">Cheapest grocer in the area (~3.3% under Walmart overall; chicken ~$0.44/lb and ground beef ~$0.40/lb cheaper). Hit the bulk bins for oats, trail mix, and pasta, and stock the freezer with meat once a month. <b>Debit or cash only — no credit cards.</b></p>
+      </div>
+      <div class="store">
+        <div class="s-head">
+          <span class="s-name">Costco (Orem) / Sam's Club (Provo)</span>
+          <span class="s-role" style="color:var(--text-muted)">SKIP FOR NOW</span>
+          <span class="s-addr">648 E 800 S, Orem · 1313 S University Ave, Provo</span>
+        </div>
+        <p class="s-why">Their $5 rotisserie chickens beat Walmart's ~$7, but the $50–65/yr membership doesn't pay for itself for one person buying this list. Revisit if you get a family membership or your food volume grows.</p>
+      </div>
+      <div class="store">
+        <div class="s-head">
+          <span class="s-name">Smith's Marketplace</span>
+          <span class="s-role" style="color:var(--text-muted)">FILL-INS ONLY</span>
+          <span class="s-addr">Springville, in town</span>
+        </div>
+        <p class="s-why">Closest option for forgot-something runs, but generally pricier than Walmart and WinCo for the same items.</p>
+      </div>
+      <p class="s-why" style="margin-top:4px;"><b>Supplements:</b> cheapest solid whey is Walmart's Equate (or Optimum Nutrition Gold Standard if you want the name brand — Walmart and Amazon carry both). Creatine: any plain creatine monohydrate — the cheap store-brand tub is chemically identical to the premium ones.</p>
+    </div>
+  </section>
+
   <!-- ============ RECOVERY ============ -->
   <section id="recovery">
     <h2>Recovery — the part that decides if this works</h2>
@@ -442,12 +507,13 @@
   });
 
   /* ---------- grocery list ---------- */
+  /* item: [name, store-badge] — default store is the weekly Walmart run */
   var GROCERY = {
-    'Proteins': ['2 rotisserie chickens (or 2–3 lb pre-cooked chicken)', '2–3 lb 90/10 ground beef', '18-count eggs', 'Large tub Greek yogurt', 'Large tub cottage cheese', '2 gallons milk (2% or whole)', 'String cheese'],
-    'Carbs': ['Rolled oats (big canister)', 'Microwave rice pouches (6–8 pack)', 'Pasta (2 boxes)', 'Bagels or whole-grain bread', 'Bananas', 'Bag of berries', 'Honey'],
-    'Fats': ['Peanut butter', 'Almonds / trail mix', 'Olive oil'],
-    'Veg & convenience': ['3–4 bagged salad kits', 'Frozen microwave veg (4–5 bags)', '2 jars marinara'],
-    'Monthly (not weekly)': ['Whey protein (2 lb+ tub)', 'Creatine monohydrate (300–500g, plain)']
+    'Proteins': [['2 rotisserie chickens (or 2–3 lb pre-cooked chicken)', 'Walmart'], ['2–3 lb 90/10 ground beef', 'Walmart · WinCo to stock freezer'], ['18-count eggs', 'Walmart'], ['Large tub Greek yogurt', 'Walmart'], ['Large tub cottage cheese', 'Walmart'], ['2 gallons milk (2% or whole)', 'Walmart'], ['String cheese', 'Walmart']],
+    'Carbs': [['Rolled oats (big canister)', 'WinCo bulk bins'], ['Microwave rice pouches (6–8 pack)', 'Walmart'], ['Pasta (2 boxes)', 'Walmart · WinCo bulk'], ['Bagels or whole-grain bread', 'Walmart'], ['Bananas', 'Walmart'], ['Bag of berries', 'Walmart'], ['Honey', 'Walmart']],
+    'Fats': [['Peanut butter', 'Walmart'], ['Almonds / trail mix', 'WinCo bulk bins'], ['Olive oil', 'Walmart']],
+    'Veg & convenience': [['3–4 bagged salad kits', 'Walmart'], ['Frozen microwave veg (4–5 bags)', 'Walmart'], ['2 jars marinara', 'Walmart']],
+    'Monthly (not weekly)': [['Whey protein (2 lb+ tub)', 'Walmart or Amazon'], ['Creatine monohydrate (300–500g, plain)', 'Walmart or Amazon']]
   };
   var gChecked = JSON.parse(localStorage.getItem('grocery') || '{}');
   var grid = document.getElementById('groceryGrid');
@@ -455,7 +521,8 @@
     var div = document.createElement('div');
     div.className = 'g-group';
     var h = document.createElement('h3'); h.textContent = group; div.appendChild(h);
-    GROCERY[group].forEach(function (item) {
+    GROCERY[group].forEach(function (entry) {
+      var item = entry[0], badge = entry[1];
       var id = 'g-' + item.replace(/[^a-z0-9]/gi, '').slice(0, 40);
       var row = document.createElement('div');
       row.className = 'g-item' + (gChecked[id] ? ' checked' : '');
@@ -463,6 +530,11 @@
       cb.type = 'checkbox'; cb.id = id; cb.checked = !!gChecked[id];
       var lb = document.createElement('label');
       lb.htmlFor = id; lb.textContent = item;
+      if (badge) {
+        var bd = document.createElement('span');
+        bd.className = 'g-badge'; bd.textContent = badge;
+        lb.appendChild(bd);
+      }
       cb.addEventListener('change', function () {
         gChecked[id] = cb.checked;
         row.classList.toggle('checked', cb.checked);
@@ -679,6 +751,11 @@
   var rT;
   window.addEventListener('resize', function () { clearTimeout(rT); rT = setTimeout(renderChart, 150); });
   renderChart();
+
+  /* ---------- PWA: offline support ---------- */
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    navigator.serviceWorker.register('sw.js');
+  }
 })();
 </script>
 </body>
